@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +40,27 @@ public class BookDaoImplIntegrationTest {
         Optional<Book> result = underTest.findOne(book.getIsbn());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(book);
+    }
 
+    @Test
+    public void testMultipleBookCreationandFindMany(){
+        Author author = TestDataUtils.creteTestAuthor();
+        authorDao.create(author);
+
+        Author author1 = TestDataUtils.creteTestAuthorWithParams(2L, 35, "Gorge Orwell");
+        authorDao.create(author1);
+
+        Book book1 = TestDataUtils.createSimpleBookWithParams("253-253-656", "The oldman and the sea", author.getId());
+        underTest.create(book1);
+        Book book2 = TestDataUtils.createSimpleBookWithParams(
+                "355-355-355", "Gatsby", author1.getId()
+        );
+        underTest.create(book2);
+        List<Book> result = underTest.find();
+
+        assertThat(result).hasSize(2).containsExactly(book1, book2);
+        assertThat(result.get(0).getAuthorId()).isEqualTo(author.getId());
+        assertThat(result.get(1).getAuthorId()).isEqualTo(author1.getId());
 
     }
 
