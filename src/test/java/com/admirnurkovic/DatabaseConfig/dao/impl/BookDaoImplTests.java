@@ -52,4 +52,25 @@ public class BookDaoImplTests {
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any()
                 );
     }
+
+    @Test
+    public void testThatBookCanBeUpdatedSql(){
+        Book book = TestDataUtils.createSimpleBook();
+        underTest.update("978-1-2345", book);
+
+        verify(jdbcTemplate).update(
+                "UPDATE books SET isbn = ?, title = ?,  author_id = ? WHERE isbn = ?",
+                "978-1-2345", book.getTitle(), book.getAuthorId(), "978-1-2345"
+        );
+    }
+
+    @Test
+    public void testThatBookCanBeDeletedSql(){
+
+        underTest.delete("978-1-2345");
+        verify(jdbcTemplate).update(
+                "DELETE FROM books WHERE isbn = ?",
+                "978-1-2345"
+        );
+    }
 }

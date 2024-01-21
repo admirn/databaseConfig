@@ -57,4 +57,28 @@ public class AuthorDaoImplTests
         );
     }
 
+
+    @Test
+    public void testUpdateAuthorSql(){
+        Author author = TestDataUtils.creteTestAuthor();
+        underTest.update(1L, author);
+
+        verify(jdbcTemplate).update(
+                "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+                1L, "Admir Nurkovic", 80, 1L
+        );
+    }
+
+
+    @Test
+    public void testDeleteAuthorSql(){
+        underTest.delete(1L);
+        verify(jdbcTemplate).update(
+                "DELETE FROM authors WHERE id = ?",
+                1L
+        );
+    }
+
+
+
 }
