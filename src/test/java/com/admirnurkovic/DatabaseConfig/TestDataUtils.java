@@ -15,11 +15,11 @@ public final class TestDataUtils {
                 .build();
     }
 
-    public static Book createSimpleBook() {
+    public static Book createSimpleBook(final Author author) {
         return Book.builder()
                 .isbn("978-1-2345")
                 .title("The shadow in the Athic")
-                .authorId(1L)
+                .author(author)
                 .build();
     }
 
@@ -31,11 +31,11 @@ public final class TestDataUtils {
                 .build();
     }
 
-    public static Book createSimpleBookWithParams(String isbn, String title, Long authorId ) {
+    public static Book createSimpleBookWithParams(String isbn, String title, Author author ) {
         return Book.builder()
                 .isbn(isbn)
                 .title(title)
-                .authorId(authorId)
+                .author(author)
                 .build();
     }
 }
